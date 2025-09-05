@@ -28,8 +28,8 @@ another.service.localhost:3002
 
 A single project can have zero, one or multiple domains associated to it.
 
-To add the project to **locport**, simply `locport index [PATH]`. Now you can overview hosts and ports and
-easily discover conflicts across any number of projects.
+To add the project to **locport**, simply `locport index [PATH]`. Now you can overview hosts and ports with
+`locport list` and easily discover conflicts across any number of projects.
 
 ## Usage
 
