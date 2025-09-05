@@ -2,7 +2,7 @@
 
 Manage local ports across projects. Prevent conflicts.
 
-## .locport file
+## .localhost file
 
 A project can define `.localhost` file, that lists local domains with ports that the project uses.
 Indexing such file/project with `locport index .` allows to list all local URLs and detect port conflicts.
