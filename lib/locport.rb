@@ -33,11 +33,21 @@ module Locport
     def add(host = "#{File.basename(Dir.pwd)}.localhost")
       host_with_port, port = ensure_port(host.strip)
 
-      # append_to_dotfile()
+      # if taken_by_path = port_taken?(port)
+      #   say_error "Port #{port} is already taken by #{taken_by_path}"
+      #   exit 1
+      # end
+
+      append_to_dotfile host_with_port
 
       say host_with_port
       say port
+    rescue HostAlreadyAddedError => e
+      say_error e.message, :red
+      exit 1
     end
+
+    class HostAlreadyAddedError < StandardError; end
 
     private
       def ensure_port(host)
@@ -73,6 +83,16 @@ module Locport
       end
 
       def append_to_dotfile(line)
+        host = line.split(":").first
+
+        host_present = File.exist?(DOTFILE) && File.read(DOTFILE).lines.any? do
+          it.split(":").first == host
+        end
+
+        if host_present
+          raise HostAlreadyAddedError, "#{host} is already present in #{DOTFILE}"
+        end
+
         File.open(DOTFILE, "a") do |f|
           f.puts(line)
         end
