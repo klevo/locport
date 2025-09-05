@@ -5,7 +5,7 @@ Manage local ports across projects. Prevent conflicts. Overview all your project
 Inspired by [DHH's Rails World 2025 keynote](https://www.youtube.com/watch?v=gcwzWzC7gUA&t=1625s) 
 part about how 37Signals deals with serving apps in development.
 
-<img width="1057" height="475" alt="Screenshot 2025-09-05 at 09 59 17" src="https://github.com/user-attachments/assets/a5242dc6-3d68-4898-9838-43e8d6d48d0a" />
+<img width="1057" height="475" alt="Rails World 2025 Keynote" src="https://github.com/user-attachments/assets/a5242dc6-3d68-4898-9838-43e8d6d48d0a" />
 
 ## Installation
 
