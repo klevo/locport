@@ -11,6 +11,8 @@ PORT_RANGE = (30_000..60_000)
 
 module Locport
   class Main < Thor
+    default_task :list
+    
     def self.exit_on_failure?
       true
     end
@@ -57,6 +59,10 @@ module Locport
 
     desc "list", "List indexed projects, hosts and ports"
     def list
+      table_data = projects.map do |(dir, host, port)|
+        [ dir.sub(Dir.home, "~"), "http://#{host}:#{port}" ]
+      end
+      print_table [ [ "Project", "URL" ] ] + table_data, borders: true
     end
 
     desc "info", "Display tool information"
@@ -67,6 +73,29 @@ module Locport
     class HostAlreadyAddedError < StandardError; end
 
     private
+      def projects
+        @projects ||= load_projects
+      end
+
+      def load_projects
+        result = []
+
+        File.read(projects_file_path).lines.each do |project_path|
+          project_path = project_path.strip
+          dotfile_path = Pathname.new(project_path).join(DOTFILE)
+          next unless File.exist?(dotfile_path)
+
+          hosts = File.read(dotfile_path).lines
+
+          hosts.each do |host_with_port|
+            host, port = host_with_port.strip.split(":")
+            result << [ project_path, host, port ]
+          end
+        end
+
+        result
+      end
+
       def ensure_port(host)
         if host =~ /:([\d]+)$/
           [ host, $1.to_i ]
