@@ -55,7 +55,11 @@ locport
 locport list
 ```
 
+<img width="687" height="175" alt="list success" src="https://github.com/user-attachments/assets/2b1dbef7-fa3b-44b9-af3e-f48340d3b49a" />
+
 If any conflicts are detected, they will be displayed and program exists with error code 1.
+
+<img width="685" height="254" alt="list conflicts" src="https://github.com/user-attachments/assets/ea5eeb06-1d96-4932-bc5f-93e950572e78" />
 
 ### TODOs
 
