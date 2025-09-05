@@ -23,5 +23,9 @@ When `add` or `list` is invoked these directories are scanned for `.localhost` f
 ## Development
 
 ```sh
+# Install dependencies
+bundle
+
+# Run commands with dev code
 ruby -Ilib/ bin/locport
 ```
