@@ -7,15 +7,9 @@ part about how 37Signals deals with serving apps in development.
 
 <img width="1057" height="475" alt="Rails World 2025 Keynote" src="https://github.com/user-attachments/assets/a5242dc6-3d68-4898-9838-43e8d6d48d0a" />
 
-## Installation
-
-[Ruby](https://www.ruby-lang.org/) is required.
-
-```sh
-gem install locport
-```
-
 ## Introducing the .localhost file convention
+
+<img width="687" height="175" alt="list success" src="https://github.com/user-attachments/assets/2b1dbef7-fa3b-44b9-af3e-f48340d3b49a" />
 
 A project can define within it's root, the `.localhost` file, that lists local hosts with ports that the project uses.
 
@@ -30,6 +24,14 @@ A single project can have zero, one or multiple domains associated to it.
 
 To add the project to **locport**, simply `locport index [PATH]`. Now you can overview hosts and ports with
 `locport list` and easily discover conflicts across any number of projects.
+
+## Installation
+
+[Ruby](https://www.ruby-lang.org/) is required.
+
+```sh
+gem install locport
+```
 
 ## Usage
 
@@ -54,8 +56,6 @@ locport
 # OR
 locport list
 ```
-
-<img width="687" height="175" alt="list success" src="https://github.com/user-attachments/assets/2b1dbef7-fa3b-44b9-af3e-f48340d3b49a" />
 
 If any conflicts are detected, they will be displayed and program exists with error code 1.
 
