@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |spec|
   spec.name        = "locport"
-  spec.version     = "1.0.0"
+  spec.version     = "1.1.0"
   spec.summary     = "localhost port management"
   spec.description = "Overview of localhost ports used across projects. Prevent conflicts."
   spec.authors     = ["Robert Starsi"]
