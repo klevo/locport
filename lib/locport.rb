@@ -17,7 +17,8 @@ module Locport
 
     desc "index [PATH]", "Index a project"
     def index(path = Dir.pwd, silent: false)
-      dotfile_path = Pathname.new(path).join(DOTFILE)
+      project_path = Pathname.new(path).cleanpath
+      dotfile_path = project_path.join(DOTFILE)
 
       unless File.exist?(dotfile_path)
         say_error "#{dotfile_path} file doesn't exist", :red
@@ -25,9 +26,11 @@ module Locport
         exit 1
       end
 
+      append_to_projects project_path.to_s
+
       unless silent
         say "Indexing ", :green
-        say dotfile_path
+        say project_path
       end
     end
 
@@ -42,7 +45,7 @@ module Locport
       # end
 
       append_to_dotfile host_with_port
-      index(silent: true)
+      index silent: true
 
       say "#{host_with_port} ", :bold 
       say "added ", :green
@@ -50,6 +53,15 @@ module Locport
     rescue HostAlreadyAddedError => e
       say_error e.message, :red
       exit 1
+    end
+
+    desc "list", "List indexed projects, hosts and ports"
+    def list
+    end
+
+    desc "info", "Display tool information"
+    def info
+      say "Projects index: #{projects_file_path}"
     end
 
     class HostAlreadyAddedError < StandardError; end
@@ -82,6 +94,12 @@ module Locport
       end
 
       def append_to_projects(line)
+        path_present = File.exist?(projects_file_path) && File.read(projects_file_path).lines.any? do
+          it.strip == line
+        end
+
+        return if path_present 
+
         File.open(projects_file_path, "a") do |f|
           f.puts(line)
         end
