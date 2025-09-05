@@ -59,22 +59,36 @@ module Locport
 
     desc "list", "List indexed projects, hosts and ports"
     def list
+      table_data = []
+      used_ports = []
+      used_hosts = []
+      conflicts_found = false
 
-      table_data = projects.map do |(dir, host, port)|
-        [ dir.sub(Dir.home, "~"), "http://#{host}:#{port}" ]
+      projects.each do |(dir, host, port)|
+        table_data << [ dir.sub(Dir.home, "~"), "http://#{host}:#{port}" ]
+
+        if used_ports.include?(port)
+          conflicts_found = true
+          table_data << [ "", "╰ Port used before" ]
+        else
+          used_ports << port
+        end
+
+        if used_hosts.include?(host)
+          conflicts_found = true
+          table_data << [ "", "╰ Host used before" ]
+        else
+          used_hosts << host
+        end
       end
+
       print_table [ [ "Project", "URL" ] ] + table_data, borders: true
 
-      if @conflicts[:ports].empty? && @conflicts[:hosts].empty?
-        say "No conflicts ✓", :green
-        exit 0
-      end
-
-      @conflicts.each do |group, conflicts|
-        next if conflicts.empty?
-        say
-        say "Conflicting #{group}: ", :red
-        say "#{conflicts.join(", ")}"
+      if conflicts_found
+        say "Conflicts found!", :red
+        exit 1
+      else
+        say "All hosts and ports are unique ✓", :green
       end
     end
 
@@ -94,7 +108,6 @@ module Locport
         result = []
         @used_ports = []
         @used_hosts = []
-        @conflicts = { ports: [], hosts: [] }
 
         File.read(projects_file_path).lines.each do |project_path|
           project_path = project_path.strip
@@ -107,15 +120,11 @@ module Locport
             host, port = host_with_port.strip.split(":")
             result << [ project_path, host, port ]
 
-            if @used_ports.include?(port)
-              @conflicts[:ports] << port
-            else
+            unless @used_ports.include?(port)
               @used_ports << port
             end
 
-            if @used_hosts.include?(host)
-              @conflicts[:hosts] << host
-            else
+            unless @used_hosts.include?(host)
               @used_hosts << host
             end
           end
