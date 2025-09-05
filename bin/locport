@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require "locport"
+
+Locport::Main.start(ARGV)
