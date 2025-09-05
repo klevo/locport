@@ -40,11 +40,21 @@ module Locport
       Without arguments current directory name will be used and random port number assigned."
     def add(host = "#{File.basename(Dir.pwd)}.localhost")
       host_with_port, port = ensure_port(host.strip)
+      host = host_with_port.split(":").first
 
-      # if taken_by_path = port_taken?(port)
-      #   say_error "Port #{port} is already taken by #{taken_by_path}"
-      #   exit 1
-      # end
+      if used_ports.include?(port)
+        say_error "Port #{port} is "
+        say_error "already used. ", :red
+        say_error "See `locport list`"
+        exit 1
+      end
+
+      if used_hosts.include?(host)
+        say_error "Host '#{host}' is " 
+        say_error "already used. ", :red
+        say_error "See `locport list`"
+        exit 1
+      end
 
       append_to_dotfile host_with_port
       index silent: true
@@ -52,9 +62,6 @@ module Locport
       say "#{host_with_port} ", :bold 
       say "added ", :green
       say "to #{DOTFILE}"
-    rescue HostAlreadyAddedError => e
-      say_error e.message, :red
-      exit 1
     end
 
     desc "list", "List indexed projects, hosts and ports"
@@ -97,15 +104,24 @@ module Locport
       say "Projects index: #{projects_file_path}"
     end
 
-    class HostAlreadyAddedError < StandardError; end
-
     private
       def projects
-        @projects ||= load_projects
+        load_projects
+        @projects 
+      end
+
+      def used_ports
+        load_projects
+        @used_ports
+      end
+
+      def used_hosts
+        load_projects
+        @used_hosts
       end
 
       def load_projects
-        result = []
+        @projects = []
         @used_ports = []
         @used_hosts = []
 
@@ -118,7 +134,8 @@ module Locport
 
           hosts.each do |host_with_port|
             host, port = host_with_port.strip.split(":")
-            result << [ project_path, host, port ]
+            port = port.to_i
+            @projects << [ project_path, host, port ]
 
             unless @used_ports.include?(port)
               @used_ports << port
@@ -130,15 +147,22 @@ module Locport
           end
         end
 
-        result
+        @projects
       end
 
       def ensure_port(host)
         if host =~ /:([\d]+)$/
           [ host, $1.to_i ]
         else
-          port = rand PORT_RANGE
+          port = find_unused_port
           [ "#{host}:#{port}", port ]
+        end
+      end
+
+      def find_unused_port
+        loop do
+          port = rand PORT_RANGE
+          return port unless used_ports.include?(port)
         end
       end
 
@@ -172,16 +196,6 @@ module Locport
       end
 
       def append_to_dotfile(line)
-        host = line.split(":").first
-
-        host_present = File.exist?(DOTFILE) && File.read(DOTFILE).lines.any? do
-          it.split(":").first == host
-        end
-
-        if host_present
-          raise HostAlreadyAddedError, "#{host} is already present in #{DOTFILE}"
-        end
-
         File.open(DOTFILE, "a") do |f|
           f.puts(line)
         end
