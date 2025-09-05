@@ -63,8 +63,8 @@ If any conflicts are detected, they will be displayed and program exits with err
 
 ### TODOs
 
-- [ ] Check for port and host conflict during `add`
-- [ ] Port generation needs to skip used ports
+- [ ] Handle empty lines in dotfile
+- [ ] Some hostname validation during `add`
 
 ## Development
 
