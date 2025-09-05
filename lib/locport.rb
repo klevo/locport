@@ -2,9 +2,11 @@
 
 require "thor"
 require "fileutils"
+require "pathname"
 
 APP_NAME = "locport"
 DATA_FILE = "projects"
+DOTFILE = ".localhost"
 
 module Locport
   class Main < Thor
@@ -14,8 +16,15 @@ module Locport
 
     desc "index [PATH]", "Index a project"
     def index(path = Dir.pwd)
-      say "Indexing #{path}"
-      say projects_file_path
+      dotfile_path = Pathname.new(path).join(DOTFILE)
+
+      unless File.exist?(dotfile_path)
+        say_error "#{dotfile_path} file doesn't exist", :red
+        say_error "You can create it from within that directory with `locport add`"
+        exit 1
+      end
+
+      say "Indexing #{dotfile_path}"
     end
 
     private
