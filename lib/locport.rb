@@ -39,9 +39,11 @@ module Locport
       # end
 
       append_to_dotfile host_with_port
+      # index unless indexed?
 
-      say host_with_port
-      say port
+      say "#{host_with_port} ", :bold 
+      say "added ", :green
+      say "to #{DOTFILE}"
     rescue HostAlreadyAddedError => e
       say_error e.message, :red
       exit 1
