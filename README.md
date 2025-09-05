@@ -64,7 +64,7 @@ If any conflicts are detected, they will be displayed and program exists with er
 
 ## Development
 
-PRs are welcome. To set up locally from within the checkout out repo:
+PRs are welcome. To set up locally from within the checked out repo:
 
 ```sh
 # Install dependencies
