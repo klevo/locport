@@ -16,7 +16,7 @@ module Locport
     end
 
     desc "index [PATH]", "Index a project"
-    def index(path = Dir.pwd)
+    def index(path = Dir.pwd, silent: false)
       dotfile_path = Pathname.new(path).join(DOTFILE)
 
       unless File.exist?(dotfile_path)
@@ -25,7 +25,10 @@ module Locport
         exit 1
       end
 
-      say "Indexing #{dotfile_path}"
+      unless silent
+        say "Indexing ", :green
+        say dotfile_path
+      end
     end
 
     desc "add [HOST[:PORT]]", "Add a new host to .localhost file. \
@@ -39,7 +42,7 @@ module Locport
       # end
 
       append_to_dotfile host_with_port
-      # index unless indexed?
+      index(silent: true)
 
       say "#{host_with_port} ", :bold 
       say "added ", :green
