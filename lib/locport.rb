@@ -12,7 +12,7 @@ PORT_RANGE = (30_000..60_000)
 module Locport
   class Main < Thor
     default_task :list
-    
+
     def self.exit_on_failure?
       true
     end
@@ -59,10 +59,23 @@ module Locport
 
     desc "list", "List indexed projects, hosts and ports"
     def list
+
       table_data = projects.map do |(dir, host, port)|
         [ dir.sub(Dir.home, "~"), "http://#{host}:#{port}" ]
       end
       print_table [ [ "Project", "URL" ] ] + table_data, borders: true
+
+      if @conflicts[:ports].empty? && @conflicts[:hosts].empty?
+        say "No conflicts ✓", :green
+        exit 0
+      end
+
+      @conflicts.each do |group, conflicts|
+        next if conflicts.empty?
+        say
+        say "Conflicting #{group}: ", :red
+        say "#{conflicts.join(", ")}"
+      end
     end
 
     desc "info", "Display tool information"
@@ -79,6 +92,9 @@ module Locport
 
       def load_projects
         result = []
+        @used_ports = []
+        @used_hosts = []
+        @conflicts = { ports: [], hosts: [] }
 
         File.read(projects_file_path).lines.each do |project_path|
           project_path = project_path.strip
@@ -90,6 +106,18 @@ module Locport
           hosts.each do |host_with_port|
             host, port = host_with_port.strip.split(":")
             result << [ project_path, host, port ]
+
+            if @used_ports.include?(port)
+              @conflicts[:ports] << port
+            else
+              @used_ports << port
+            end
+
+            if @used_hosts.include?(host)
+              @conflicts[:hosts] << host
+            else
+              @used_hosts << host
+            end
           end
         end
 
