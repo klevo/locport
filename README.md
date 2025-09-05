@@ -1,6 +1,6 @@
 # locport
 
-Manage .localhost ports across projects.
+Manage local ports across projects. Prevent conflicts.
 
 ## .locport file
 
