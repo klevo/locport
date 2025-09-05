@@ -2,8 +2,8 @@
 
 Manage local ports across projects. Prevent conflicts. Overview all your projects, hosts and ports.
 
-Inspired by [DHH's Rails World 2025 keynote](https://www.youtube.com/watch?v=gcwzWzC7gUA&t=1625s) 
-part about how 37Signals deals with serving apps in development.
+Inspired by [DHH's Rails World 2025 keynote part](https://www.youtube.com/watch?v=gcwzWzC7gUA&t=1625s) 
+about how 37Signals deals with serving apps in development.
 
 <img width="1057" height="475" alt="Rails World 2025 Keynote" src="https://github.com/user-attachments/assets/a5242dc6-3d68-4898-9838-43e8d6d48d0a" />
 
@@ -57,7 +57,7 @@ locport
 locport list
 ```
 
-If any conflicts are detected, they will be displayed and program exists with error code 1.
+If any conflicts are detected, they will be displayed and program exits with error code 1.
 
 <img width="685" height="254" alt="list conflicts" src="https://github.com/user-attachments/assets/ea5eeb06-1d96-4932-bc5f-93e950572e78" />
 
