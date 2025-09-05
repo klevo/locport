@@ -7,6 +7,7 @@ require "pathname"
 APP_NAME = "locport"
 DATA_FILE = "projects"
 DOTFILE = ".localhost"
+PORT_RANGE = (30_000..60_000)
 
 module Locport
   class Main < Thor
@@ -27,7 +28,24 @@ module Locport
       say "Indexing #{dotfile_path}"
     end
 
+    desc "add [HOST[:PORT]]", "Add a new host to .localhost file. \
+      Without arguments current directory name will be used and random port number assigned."
+    def add(host = "#{File.basename(Dir.pwd)}.localhost")
+      host = host.strip
+      port = assign_port(host)
+      say host
+      say port
+    end
+
     private
+      def assign_port(host)
+        if host =~ /:([\d]+)$/
+          $1.to_i
+        else
+          rand(PORT_RANGE)
+        end
+      end
+
       def storage_base_dir
         if Gem.win_platform?
           ENV["APPDATA"] || File.join(Dir.home, "AppData", "Roaming")
