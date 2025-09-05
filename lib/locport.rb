@@ -31,18 +31,21 @@ module Locport
     desc "add [HOST[:PORT]]", "Add a new host to .localhost file. \
       Without arguments current directory name will be used and random port number assigned."
     def add(host = "#{File.basename(Dir.pwd)}.localhost")
-      host = host.strip
-      port = assign_port(host)
-      say host
+      host_with_port, port = ensure_port(host.strip)
+
+      # append_to_dotfile()
+
+      say host_with_port
       say port
     end
 
     private
-      def assign_port(host)
+      def ensure_port(host)
         if host =~ /:([\d]+)$/
-          $1.to_i
+          [ host, $1.to_i ]
         else
-          rand(PORT_RANGE)
+          port = rand PORT_RANGE
+          [ "#{host}:#{port}", port ]
         end
       end
 
@@ -65,6 +68,12 @@ module Locport
 
       def append_to_projects(line)
         File.open(projects_file_path, "a") do |f|
+          f.puts(line)
+        end
+      end
+
+      def append_to_dotfile(line)
+        File.open(DOTFILE, "a") do |f|
           f.puts(line)
         end
       end
