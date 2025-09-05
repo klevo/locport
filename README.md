@@ -20,6 +20,10 @@ a random port number is assigned from a pool.
 Append projects added with `lockport index` to a configuration file, kept in an appropriate system folder.
 When `add` or `list` is invoked these directories are scanned for `.localhost` files.
 
+### TODOs
+
+- [ ] Check for port and host conflict during `add`
+
 ## Development
 
 ```sh
