@@ -66,6 +66,7 @@ If any conflicts are detected, they will be displayed and program exits with err
 - [ ] Handle empty lines in dotfile
 - [ ] Some hostname validation during `add`
 - [ ] Remove project from the index
+- [ ] Test suite
 
 ## Development
 
