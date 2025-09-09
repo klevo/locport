@@ -1,6 +1,6 @@
 # locport
 
-Manage local ports across projects. Prevent conflicts. Overview all your projects, hosts and ports.
+Manage local ports across projects. Prevent conflicts. Overview all your projects, hosts and ports. Proxy-free.
 
 Inspired by [DHH's Rails World 2025 keynote part](https://www.youtube.com/watch?v=gcwzWzC7gUA&t=1625s) 
 about how 37Signals deals with serving apps in development.
