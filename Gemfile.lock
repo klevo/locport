@@ -10,8 +10,11 @@ GEM
     thor (1.4.0)
 
 PLATFORMS
-  arm64-darwin-24
-  ruby
+  aarch64-linux-musl
+  arm64-darwin
+  x86_64-darwin
+  x86_64-linux
+  x86_64-linux-musl
 
 DEPENDENCIES
   locport!
