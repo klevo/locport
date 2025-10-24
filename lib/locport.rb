@@ -148,6 +148,8 @@ module Locport
         end
 
         @projects
+      rescue Errno::ENOENT
+        @projects
       end
 
       def ensure_port(host)
