@@ -2,7 +2,7 @@
 
 Manage local ports across projects. Prevent conflicts. Overview all your projects, hosts and ports. Proxy-free.
 
-![localhost](https://github.com/user-attachments/assets/a930a841-5a41-4c92-8d51-453100c288d0)
+![locport-logo](https://github.com/user-attachments/assets/52df253c-aeb9-46a1-9c26-a40ad733379f)
 
 ## Introducing the .localhost file convention
 
