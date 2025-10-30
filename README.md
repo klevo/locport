@@ -2,10 +2,7 @@
 
 Manage local ports across projects. Prevent conflicts. Overview all your projects, hosts and ports. Proxy-free.
 
-Inspired by [DHH's Rails World 2025 keynote part](https://www.youtube.com/watch?v=gcwzWzC7gUA&t=1625s) 
-about how 37Signals deals with serving apps in development.
-
-<img width="1057" height="475" alt="Rails World 2025 Keynote" src="https://github.com/user-attachments/assets/a5242dc6-3d68-4898-9838-43e8d6d48d0a" />
+![localhost](https://github.com/user-attachments/assets/a930a841-5a41-4c92-8d51-453100c288d0)
 
 ## Introducing the .localhost file convention
 
