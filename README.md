@@ -6,8 +6,6 @@ Manage local ports across projects. Prevent conflicts. Overview all your project
 
 ## Introducing the .localhost file convention
 
-<img width="687" height="175" alt="list success" src="https://github.com/user-attachments/assets/2b1dbef7-fa3b-44b9-af3e-f48340d3b49a" />
-
 A project can define within it's root, the `.localhost` file, that lists local hosts with ports that the project uses.
 
 Format of this file is a simple list of `<host>:<port>` separated by newlines. For example:
@@ -21,6 +19,8 @@ A single project can have zero, one or multiple domains associated to it.
 
 To add the project to **locport**, simply `locport index [PATH]`. Now you can overview hosts and ports with
 `locport list` and easily discover conflicts across any number of projects.
+
+<img width="687" height="175" alt="list success" src="https://github.com/user-attachments/assets/2b1dbef7-fa3b-44b9-af3e-f48340d3b49a" />
 
 ## Installation
 
