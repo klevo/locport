@@ -13,6 +13,8 @@ PORT_RANGE = (30_000..60_000)
 
 module Locport
   class Main < Thor
+    COLOR_FAINT  = "\e[2m"
+
     default_task :list
 
     def self.exit_on_failure?
@@ -68,7 +70,6 @@ module Locport
 
     desc "list", "List indexed projects, hosts and ports"
     def list
-      table_data = []
       used_ports = []
       used_hosts = []
       conflicts_found = false
@@ -78,7 +79,12 @@ module Locport
 
         shell.indent do
           addresses.each do |(host, port)|
-            say [ host, port ].join(":")
+            port_color = indexer.port_open?(port) ? :green : COLOR_FAINT
+
+            say "• ", port_color
+            shell.indent(-1) do
+              say [ host, port ].join(":")
+            end
 
             if used_ports.include?(port)
               conflicts_found = true
@@ -98,10 +104,10 @@ module Locport
       end
 
       if conflicts_found
-        say "Conflicts found!", :red
+        say "Conflicts found", :red
         exit 1
-      else
-        say "All hosts and ports are unique ✓", :green
+      # else
+      #   say "All hosts and ports are unique ✓", :green
       end
     end
 
