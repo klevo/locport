@@ -9,6 +9,11 @@ module Locport
       @indexer = Indexer.new(home_path: File.dirname(@projects_path), storage_base_dir:)
     end
 
+    def test_default_storage_base_dir
+      indexer = Indexer.new
+      refute_predicate indexer.default_storage_base_dir, :empty?
+    end
+
     def test_index
       expected = [ @projects_path.join("alpha/.localhost") ]
       assert_equal expected, @indexer.index(@projects_path.join("alpha"))

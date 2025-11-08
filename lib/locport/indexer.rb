@@ -70,15 +70,15 @@ module Locport
       File.write path, @dotfiles.join("\n")
     end
 
-    private
-      def default_storage_base_dir
-        if Gem.win_platform?
-          ENV["APPDATA"] || File.join(Dir.home, "AppData", "Roaming")
-        else
-          ENV["XDG_DATA_HOME"] || File.join(Dir.home, ".local", "share")
-        end
+    def default_storage_base_dir
+      if Gem.win_platform?
+        ENV["APPDATA"] || File.join(Dir.home, "AppData", "Roaming")
+      else
+        ENV["XDG_DATA_HOME"] || File.join(Dir.home, ".local", "share")
       end
+    end
 
+    private
       def storage_dir
         File.join(@storage_base_dir, APP_NAME)
       end
