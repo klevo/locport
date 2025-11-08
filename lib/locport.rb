@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require "thor"
+require "locport/project"
+
 require "fileutils"
 require "pathname"
 
