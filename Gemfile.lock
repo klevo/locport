@@ -7,6 +7,8 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
+    minitest (5.26.0)
+    rake (13.3.1)
     thor (1.4.0)
 
 PLATFORMS
@@ -18,6 +20,8 @@ PLATFORMS
 
 DEPENDENCIES
   locport!
+  minitest (~> 5.0)
+  rake (~> 13.0)
 
 BUNDLED WITH
    2.7.1

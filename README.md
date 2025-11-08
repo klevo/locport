@@ -78,3 +78,9 @@ bundle
 # Run commands with dev code
 ruby -Ilib/ bin/locport
 ```
+
+### Running tests
+
+```sh
+bin/rake
+```
