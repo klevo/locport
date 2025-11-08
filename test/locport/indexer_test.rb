@@ -13,12 +13,11 @@ module Locport
     end
 
     def test_index_recursively
-      skip
       expected = [
-        @projects_path.join("alpha/.localhost").to_s,
-        @projects_path.join("beta/.localhost").to_s
+        @projects_path.join("alpha/.localhost"),
+        @projects_path.join("beta/.localhost")
       ]
-      assert_equal expected, @indexer.index(@projects_path, recursively: true)
+      assert_equal expected, @indexer.index(@projects_path, recursive: true)
     end
 
     def test_empty_projects
