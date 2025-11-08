@@ -4,12 +4,21 @@ module Locport
   class IndexerTest < Minitest::Test
     def setup
       @indexer = Indexer.new
-      @projects_path = File.expand_path("../fixtures/projects", __dir__)
+      @projects_path = Pathname.new File.expand_path("../fixtures/projects", __dir__)
       assert Dir.exist?(@projects_path)
     end
 
     def test_index
-      @indexer.index(@projects_path)
+      assert_equal @projects_path.join("alpha/.localhost"), @indexer.index(@projects_path.join("alpha").to_s)
+    end
+
+    def test_index_recursively
+      skip
+      expected = [
+        @projects_path.join("alpha/.localhost").to_s,
+        @projects_path.join("beta/.localhost").to_s
+      ]
+      assert_equal expected, @indexer.index(@projects_path, recursively: true)
     end
 
     def test_empty_projects
