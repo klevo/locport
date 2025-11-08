@@ -1,0 +1,38 @@
+name: Test
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  # rubocop:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: actions/checkout@v4
+  #   - name: Set up Ruby
+  #     uses: ruby/setup-ruby@v1
+  #     with:
+  #       ruby-version: 3.4
+  #       bundler-cache: true
+  #   - name: rubocop
+  #     run: bundle exec rubocop
+
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ruby-version: [ "3.2", "3.3", "3.4" ]
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.ruby-version }}
+        bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+    - name: tests
+      run: bin/rake

@@ -61,6 +61,7 @@ If any conflicts are detected, they will be displayed and program exits with err
 ### TODOs
 
 - [x] Test suite
+- [ ] GitHub CI
 - [ ] Handle empty lines in dotfile
 - [ ] Some hostname validation during `add`
 - [ ] Ability to add port tcp (non-http) port, that won't be converted into HTTP. Or add http:// explicitly.
