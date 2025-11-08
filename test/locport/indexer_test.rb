@@ -59,7 +59,7 @@ module Locport
         @projects_path.join("beta")
       ]
       assert_equal expected.join("\n"), File.read("#{tmpdir}/locport/projects")
-      assert_equal expected.map { it.join(Indexer::DOTFILE) }, indexer.load_dotfiles
+      assert_equal expected.map { |path| path.join(Indexer::DOTFILE) }, indexer.load_dotfiles
     ensure
       FileUtils.rm_rf tmpdir
     end
