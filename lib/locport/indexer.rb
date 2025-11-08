@@ -9,7 +9,7 @@ module Locport
     DOTFILE = ".localhost"
     DATA_FILE = "projects"
 
-    attr_reader :projects, :dotfiles
+    attr_reader :dotfiles
 
     def initialize(home_path: Dir.home, storage_base_dir: default_storage_base_dir)
       @home_path = home_path
@@ -55,7 +55,7 @@ module Locport
           end
         rescue Errno::ENOENT
         end
-      end
+      end.sort.to_h
     end
 
     def port_open?(port)
