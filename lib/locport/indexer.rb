@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "find"
+require "socket"
 
 module Locport
   class Indexer
@@ -51,6 +52,13 @@ module Locport
           end
         end
       end
+    end
+
+    def port_open?(port)
+      Socket.tcp("127.0.0.1", port, connect_timeout: 0.01) {}  # 10ms timeout
+      true
+    rescue Errno::ECONNREFUSED, Errno::ETIMEDOUT, SocketError
+      false
     end
   end
 end

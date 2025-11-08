@@ -45,5 +45,15 @@ module Locport
       }
       assert_equal expected, @indexer.projects
     end
+
+    def test_port_open
+      # port 0 means "assign an available port"
+      server = TCPServer.new('127.0.0.1', 0)
+      port = server.addr[1]
+      assert @indexer.port_open?(port)
+
+      server.close
+      refute @indexer.port_open?(port)
+    end
   end
 end
