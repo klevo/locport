@@ -5,6 +5,7 @@ require "socket"
 
 module Locport
   class Indexer
+    APP_NAME = "locport"
     DOTFILE = ".localhost"
     DATA_FILE = "projects"
 
@@ -62,9 +63,23 @@ module Locport
       false
     end
 
-    def save(dir_path)
+    def save(dir_path = storage_dir)
+      FileUtils.mkdir_p(dir_path)
       path = Pathname.new(dir_path).join DATA_FILE
       File.write path, @dotfiles.join("\n")
     end
+
+    private
+      def storage_base_dir
+        if Gem.win_platform?
+          ENV["APPDATA"] || File.join(Dir.home, "AppData", "Roaming")
+        else
+          ENV["XDG_DATA_HOME"] || File.join(Dir.home, ".local", "share")
+        end
+      end
+
+      def storage_dir
+        File.join(storage_base_dir, APP_NAME)
+      end
   end
 end
