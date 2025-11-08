@@ -4,7 +4,7 @@ require "find"
 require "socket"
 
 module Locport
-  Address = Struct.new(:host, :port)
+  Address = Struct.new(:host, :port, :path, :line_number)
 
   class Indexer
     APP_NAME = "locport"
@@ -40,19 +40,19 @@ module Locport
     def projects
       {}.tap do |result|
         @dotfiles.each do |path|
-          File.read(path).lines do |line|
-            path_s = File.dirname path.to_s
+          File.read(path).each_line.with_index do |line, line_number|
+            dir = File.dirname path.to_s
 
-            key = if path_s.start_with?(@home_path.to_s)
-              path_s.sub(@home_path.to_s, "~")
+            key = if dir.start_with?(@home_path.to_s)
+              dir.sub(@home_path.to_s, "~")
             else
-              path_s
+              dir
             end
 
             result[key] ||= []
 
             if line.strip =~ /^(.+):(\d+)$/
-              result[key] << Address.new($1, $2.to_i)
+              result[key] << Address.new($1, $2.to_i, path.to_s, line_number)
             end
           end
         rescue Errno::ENOENT

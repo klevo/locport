@@ -69,12 +69,12 @@ module Locport
 
       expected = {
         "~/projects/alpha" => [
-          Address.new("http://alpha.localhost", 30000),
-          Address.new("http://sub.alpha.localhost", 30001),
-          Address.new("livereload", 40003)
+          Address.new("http://alpha.localhost", 30000, @projects_path.join("alpha", ".localhost").to_s, 0),
+          Address.new("http://sub.alpha.localhost", 30001, @projects_path.join("alpha", ".localhost").to_s, 1),
+          Address.new("livereload", 40003, @projects_path.join("alpha", ".localhost").to_s, 2)
         ],
         "~/projects/beta" => [
-          Address.new("http://beta.localhost", 31000)
+          Address.new("http://beta.localhost", 31000, @projects_path.join("beta", ".localhost").to_s, 0)
         ]
       }
       assert_equal expected, @indexer.projects
