@@ -5,7 +5,8 @@ module Locport
     def setup
       @projects_path = Pathname.new File.expand_path("../fixtures/projects", __dir__)
       assert Dir.exist?(@projects_path)
-      @indexer = Indexer.new(home_path: File.dirname(@projects_path))
+      storage_base_dir = File.expand_path("../fixtures/data")
+      @indexer = Indexer.new(home_path: File.dirname(@projects_path), storage_base_dir:)
     end
 
     def test_index
@@ -42,15 +43,17 @@ module Locport
 
     def test_save_index
       tmpdir = Dir.mktmpdir
-      @indexer.index(@projects_path, recursive: true)
-      @indexer.save(tmpdir)
-      assert File.exist?("#{tmpdir}/projects")
+      indexer = Indexer.new(storage_base_dir: tmpdir)
+      indexer.index(@projects_path, recursive: true)
+
+      assert indexer.save
+      assert File.exist?("#{tmpdir}/locport/projects")
 
       expected = [
         @projects_path.join("alpha", ".localhost"),
         @projects_path.join("beta", ".localhost")
       ].join("\n")
-      assert_equal expected, File.read("#{tmpdir}/projects")
+      assert_equal expected, File.read("#{tmpdir}/locport/projects")
     ensure
       FileUtils.rm_rf tmpdir
     end

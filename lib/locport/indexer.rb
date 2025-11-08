@@ -11,10 +11,11 @@ module Locport
 
     attr_reader :projects, :dotfiles
 
-    def initialize(home_path: Dir.home)
+    def initialize(home_path: Dir.home, storage_base_dir: default_storage_base_dir)
       @projects = {}
       @dotfiles = []
       @home_path = home_path
+      @storage_base_dir = storage_base_dir
     end
 
     def index(path, recursive: false)
@@ -63,14 +64,14 @@ module Locport
       false
     end
 
-    def save(dir_path = storage_dir)
-      FileUtils.mkdir_p(dir_path)
-      path = Pathname.new(dir_path).join DATA_FILE
+    def save
+      FileUtils.mkdir_p(storage_dir)
+      path = Pathname.new(storage_dir).join DATA_FILE
       File.write path, @dotfiles.join("\n")
     end
 
     private
-      def storage_base_dir
+      def default_storage_base_dir
         if Gem.win_platform?
           ENV["APPDATA"] || File.join(Dir.home, "AppData", "Roaming")
         else
@@ -79,7 +80,7 @@ module Locport
       end
 
       def storage_dir
-        File.join(storage_base_dir, APP_NAME)
+        File.join(@storage_base_dir, APP_NAME)
       end
   end
 end
