@@ -78,26 +78,26 @@ module Locport
         say dir, :blue
 
         shell.indent do
-          addresses.each do |(host, port)|
-            port_color = indexer.port_open?(port) ? :green : COLOR_FAINT
+          addresses.each do |address|
+            port_color = indexer.port_open?(address.port) ? :green : COLOR_FAINT
 
             say "• ", port_color
             shell.indent(-1) do
-              say [ host, port ].join(":")
+              say [ address.host, address.port ].join(":")
             end
 
-            if used_ports.include?(port)
+            if used_ports.include?(address.port)
               conflicts_found = true
               say "╰ Port used before", :red
             else
-              used_ports << port
+              used_ports << address.port
             end
 
-            if used_hosts.include?(host)
+            if used_hosts.include?(address.host)
               conflicts_found = true
               say "╰ Host used before", :red
             else
-              used_hosts << host
+              used_hosts << address.host
             end
           end
         end

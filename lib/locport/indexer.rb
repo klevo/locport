@@ -4,6 +4,8 @@ require "find"
 require "socket"
 
 module Locport
+  Address = Struct.new(:host, :port)
+
   class Indexer
     APP_NAME = "locport"
     DOTFILE = ".localhost"
@@ -50,7 +52,7 @@ module Locport
             result[key] ||= []
 
             if line.strip =~ /^(.+):(\d+)$/
-              result[key] << [ $1, $2.to_i ]
+              result[key] << Address.new($1, $2.to_i)
             end
           end
         rescue Errno::ENOENT

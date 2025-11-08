@@ -16,7 +16,7 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = ">= 3.2"
 
   spec.add_dependency "thor", "~> 1.3"
-  
+
   spec.add_development_dependency "minitest", "~> 5.0"
   spec.add_development_dependency "rake", "~> 13.0"
   spec.add_development_dependency "testerobly", "~> 1.0"
