@@ -12,10 +12,10 @@ module Locport
     attr_reader :projects, :dotfiles
 
     def initialize(home_path: Dir.home, storage_base_dir: default_storage_base_dir)
-      @projects = {}
-      @dotfiles = []
       @home_path = home_path
       @storage_base_dir = storage_base_dir
+      @dotfiles = load_dotfiles
+      @projects = {}
     end
 
     def index(path, recursive: false)
@@ -64,10 +64,15 @@ module Locport
       false
     end
 
+    def load_dotfiles
+      File.read(storage_path).lines.map(&:strip).reject(&:empty?).map { |path| Pathname.new(path) }
+    rescue Errno::ENOENT
+      []
+    end
+
     def save
-      FileUtils.mkdir_p(storage_dir)
-      path = Pathname.new(storage_dir).join DATA_FILE
-      File.write path, @dotfiles.join("\n")
+      FileUtils.mkdir_p storage_dir
+      File.write storage_path, @dotfiles.join("\n")
     end
 
     def default_storage_base_dir
@@ -80,7 +85,11 @@ module Locport
 
     private
       def storage_dir
-        File.join(@storage_base_dir, APP_NAME)
+        File.join @storage_base_dir, APP_NAME
+      end
+
+      def storage_path
+        File.join storage_dir, DATA_FILE
       end
   end
 end

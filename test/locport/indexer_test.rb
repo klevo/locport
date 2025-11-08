@@ -46,7 +46,7 @@ module Locport
       assert_empty @indexer.projects
     end
 
-    def test_save_index
+    def test_save_index_and_load_dotfiles
       tmpdir = Dir.mktmpdir
       indexer = Indexer.new(storage_base_dir: tmpdir)
       indexer.index(@projects_path, recursive: true)
@@ -57,8 +57,9 @@ module Locport
       expected = [
         @projects_path.join("alpha", ".localhost"),
         @projects_path.join("beta", ".localhost")
-      ].join("\n")
-      assert_equal expected, File.read("#{tmpdir}/locport/projects")
+      ]
+      assert_equal expected.join("\n"), File.read("#{tmpdir}/locport/projects")
+      assert_equal expected, indexer.load_dotfiles
     ensure
       FileUtils.rm_rf tmpdir
     end
