@@ -45,7 +45,7 @@ module Locport
 
             result[key] ||= []
 
-            if line =~ /^(.+):(\d+)$/
+            if line.strip =~ /^(.+):(\d+)$/
               result[key] << [ $1, $2.to_i ]
             end
           end
