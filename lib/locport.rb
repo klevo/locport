@@ -70,8 +70,6 @@ module Locport
 
     desc "list", "List indexed projects, hosts and ports"
     def list
-      used_ports = []
-      used_hosts = []
       conflicts_found = false
 
       indexer.projects.each do |dir, addresses|
@@ -86,18 +84,20 @@ module Locport
               say [ address.host, address.port ].join(":")
             end
 
-            if used_ports.include?(address.port)
+            if address.port_conflicts
               conflicts_found = true
-              say "╰ Port used before", :red
-            else
-              used_ports << address.port
+
+              address.port_conflicts.each do |conflicting_address|
+                say "╰ Port also at #{conflicting_address.path}:#{conflicting_address.line_number}", :red
+              end
             end
 
-            if used_hosts.include?(address.host)
+            if address.host_conflicts
               conflicts_found = true
-              say "╰ Host used before", :red
-            else
-              used_hosts << address.host
+
+              address.host_conflicts.each do |conflicting_address|
+                say "╰ Host also at #{conflicting_address.path}:#{conflicting_address.line_number}", :red
+              end
             end
           end
         end
@@ -106,8 +106,6 @@ module Locport
       if conflicts_found
         say "Conflicts found", :red
         exit 1
-      # else
-      #   say "All hosts and ports are unique ✓", :green
       end
     end
 
