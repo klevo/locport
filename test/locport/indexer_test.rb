@@ -30,6 +30,15 @@ module Locport
       assert_empty @indexer.projects
     end
 
+    def test_save_index
+      tmpdir = Dir.mktmpdir
+      @indexer.index(@projects_path, recursive: true)
+      @index.save(tmpdir)
+      assert File.exist?("#{tmpdir}/projects")
+    ensure
+      FileUtils.rm_rf tmpdir
+    end
+
     def test_projects
       @indexer.index(@projects_path, recursive: true)
 
