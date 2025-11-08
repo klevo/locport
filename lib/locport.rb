@@ -81,7 +81,7 @@ module Locport
 
             say "• ", port_color
             shell.indent(-1) do
-              say [ address.host, address.port ].join(":")
+              say [ display_host(address.host), address.port ].join(":")
             end
 
             if address.port_conflicts
@@ -214,6 +214,14 @@ module Locport
       def append_to_dotfile(line)
         File.open(DOTFILE, "a") do |f|
           f.puts(line)
+        end
+      end
+
+      def display_host(host)
+        if host.include?("://")
+          host
+        else
+          "http://#{host}"
         end
       end
   end
