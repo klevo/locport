@@ -9,7 +9,13 @@ module Locport
     end
 
     def test_index
-      assert_equal @projects_path.join("alpha/.localhost"), @indexer.index(@projects_path.join("alpha").to_s)
+      expected = [ @projects_path.join("alpha/.localhost") ]
+      assert_equal expected, @indexer.index(@projects_path.join("alpha"))
+    end
+
+    def test_empty_index
+      assert_empty @indexer.index(@projects_path)
+      assert_empty @indexer.index(@projects_path.join("doesnt-exist"))
     end
 
     def test_index_recursively

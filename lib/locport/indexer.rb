@@ -12,24 +12,19 @@ module Locport
       @projects = {}
     end
 
-    def index(start_path, recursive: false)
-      unless recursive
-        return index_directory(start_path)
-      else
-        [].tap do |result|
-          Find.find(start_path) do |path|
-            if File.basename(path) == DOTFILE && File.file?(path)
-              result << Pathname.new(path)
-            end
+    def index(path, recursive: false)
+      start_path = path.to_s
+
+      [].tap do |result|
+        Find.find(start_path) do |path|
+          break if !recursive && File.directory?(path) && path.size > start_path.size
+
+          if File.basename(path) == DOTFILE && File.file?(path)
+            result << Pathname.new(path)
           end
         end
+      rescue Errno::ENOENT
       end
     end
-
-    private
-      def index_directory(path)
-        project_path = Pathname.new(path).cleanpath
-        project_path.join(DOTFILE)
-      end
   end
 end
