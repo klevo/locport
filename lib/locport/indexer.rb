@@ -30,7 +30,7 @@ module Locport
       rescue Errno::ENOENT
       end
 
-      @dotfiles
+      @dotfiles = @dotfiles.uniq.sort
     end
 
     def projects
@@ -60,6 +60,11 @@ module Locport
       true
     rescue Errno::ECONNREFUSED, Errno::ETIMEDOUT, SocketError
       false
+    end
+
+    def save(dir_path)
+      path = Pathname.new(dir_path).join DATA_FILE
+      File.write path, @dotfiles.join("\n")
     end
   end
 end

@@ -11,6 +11,16 @@ module Locport
     def test_index
       expected = [ @projects_path.join("alpha/.localhost") ]
       assert_equal expected, @indexer.index(@projects_path.join("alpha"))
+      assert_equal expected, @indexer.dotfiles
+
+      # Indexing another directory adds onto existing dotfiles
+      @indexer.index(@projects_path.join("beta"))
+      assert_equal 2, @indexer.dotfiles.size
+      assert_equal expected.first, @indexer.dotfiles.first
+
+      # Idempotency
+      @indexer.index(@projects_path.join("beta"))
+      assert_equal 2, @indexer.dotfiles.size
     end
 
     def test_empty_index
@@ -33,8 +43,14 @@ module Locport
     def test_save_index
       tmpdir = Dir.mktmpdir
       @indexer.index(@projects_path, recursive: true)
-      @index.save(tmpdir)
+      @indexer.save(tmpdir)
       assert File.exist?("#{tmpdir}/projects")
+
+      expected = [
+        @projects_path.join("alpha", ".localhost"),
+        @projects_path.join("beta", ".localhost")
+      ].join("\n")
+      assert_equal expected, File.read("#{tmpdir}/projects")
     ensure
       FileUtils.rm_rf tmpdir
     end
