@@ -74,26 +74,28 @@ module Locport
       conflicts_found = false
 
       indexer.projects.each do |dir, addresses|
-        addresses.each do |(host, port)|
-          table_data << [ dir.sub(Dir.home, "~"), "http://#{host}:#{port}" ]
+        say dir, :blue
 
-          if used_ports.include?(port)
-            conflicts_found = true
-            table_data << [ "", "╰ Port used before" ]
-          else
-            used_ports << port
-          end
+        shell.indent do
+          addresses.each do |(host, port)|
+            say [ host, port ].join(":")
 
-          if used_hosts.include?(host)
-            conflicts_found = true
-            table_data << [ "", "╰ Host used before" ]
-          else
-            used_hosts << host
+            if used_ports.include?(port)
+              conflicts_found = true
+              say "╰ Port used before", :red
+            else
+              used_ports << port
+            end
+
+            if used_hosts.include?(host)
+              conflicts_found = true
+              say "╰ Host used before", :red
+            else
+              used_hosts << host
+            end
           end
         end
       end
-
-      print_table [ [ "Indexer", "URL" ] ] + table_data, borders: true
 
       if conflicts_found
         say "Conflicts found!", :red
