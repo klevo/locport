@@ -53,6 +53,7 @@ module Locport
               result[key] << [ $1, $2.to_i ]
             end
           end
+        rescue Errno::ENOENT
         end
       end
     end
@@ -65,14 +66,14 @@ module Locport
     end
 
     def load_dotfiles
-      File.read(storage_path).lines.map(&:strip).reject(&:empty?).map { |path| Pathname.new(path) }
+      File.read(storage_path).lines.map(&:strip).reject(&:empty?).map { |path| Pathname.new(path).join(DOTFILE) }
     rescue Errno::ENOENT
       []
     end
 
     def save
       FileUtils.mkdir_p storage_dir
-      File.write storage_path, @dotfiles.join("\n")
+      File.write storage_path, @dotfiles.map { |path| File.dirname(path) }.join("\n")
     end
 
     def default_storage_base_dir

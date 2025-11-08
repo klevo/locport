@@ -73,21 +73,23 @@ module Locport
       used_hosts = []
       conflicts_found = false
 
-      projects.each do |(dir, host, port)|
-        table_data << [ dir.sub(Dir.home, "~"), "http://#{host}:#{port}" ]
+      indexer.projects.each do |dir, addresses|
+        addresses.each do |(host, port)|
+          table_data << [ dir.sub(Dir.home, "~"), "http://#{host}:#{port}" ]
 
-        if used_ports.include?(port)
-          conflicts_found = true
-          table_data << [ "", "╰ Port used before" ]
-        else
-          used_ports << port
-        end
+          if used_ports.include?(port)
+            conflicts_found = true
+            table_data << [ "", "╰ Port used before" ]
+          else
+            used_ports << port
+          end
 
-        if used_hosts.include?(host)
-          conflicts_found = true
-          table_data << [ "", "╰ Host used before" ]
-        else
-          used_hosts << host
+          if used_hosts.include?(host)
+            conflicts_found = true
+            table_data << [ "", "╰ Host used before" ]
+          else
+            used_hosts << host
+          end
         end
       end
 
@@ -107,6 +109,10 @@ module Locport
     end
 
     private
+      def indexer
+        @indexer ||= Indexer.new
+      end
+
       def projects
         load_projects
         @projects 
