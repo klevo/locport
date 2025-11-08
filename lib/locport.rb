@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "thor"
-require "locport/project"
+require "locport/indexer"
 
 require "fileutils"
 require "pathname"
@@ -91,7 +91,7 @@ module Locport
         end
       end
 
-      print_table [ [ "Project", "URL" ] ] + table_data, borders: true
+      print_table [ [ "Indexer", "URL" ] ] + table_data, borders: true
 
       if conflicts_found
         say "Conflicts found!", :red
@@ -103,7 +103,7 @@ module Locport
 
     desc "info", "Display tool information"
     def info
-      say "Projects index: #{projects_file_path}"
+      say "Indexers index: #{projects_file_path}"
     end
 
     private
