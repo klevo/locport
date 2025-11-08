@@ -60,10 +60,12 @@ If any conflicts are detected, they will be displayed and program exits with err
 
 ### TODOs
 
+- [ ] Test suite
 - [ ] Handle empty lines in dotfile
 - [ ] Some hostname validation during `add`
+- [ ] Ability to add port tcp (non-http) port, that won't be converted into HTTP. Or add http:// explicitly.
 - [ ] Remove project from the index
-- [ ] Test suite
+- [ ] Recursively index projects
 
 ## Development
 
