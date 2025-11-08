@@ -6,6 +6,7 @@ require "socket"
 module Locport
   class Indexer
     DOTFILE = ".localhost"
+    DATA_FILE = "projects"
 
     attr_reader :projects, :dotfiles
 

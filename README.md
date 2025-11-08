@@ -62,11 +62,11 @@ If any conflicts are detected, they will be displayed and program exits with err
 
 - [x] Test suite
 - [x] GitHub CI
-- [ ] Handle empty lines in dotfile
+- [x] Handle empty lines in dotfile
 - [ ] Some hostname validation during `add`
-- [ ] Ability to add port tcp (non-http) port, that won't be converted into HTTP. Or add http:// explicitly.
+- [x] Ability to add port tcp (non-http) port, that won't be converted into HTTP. Or add http:// explicitly.
 - [ ] Remove project from the index
-- [ ] Recursively index projects
+- [x] Recursively index projects
 
 ## Development
 
