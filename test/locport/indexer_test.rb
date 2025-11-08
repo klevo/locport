@@ -67,12 +67,12 @@ module Locport
     def test_projects
       @indexer.index(@projects_path, recursive: true)
 
-      a = Address.new("http://alpha.localhost", 30000, @projects_path.join("alpha", ".localhost").to_s, 0)
-      b = Address.new("http://sub.alpha.localhost", 30001, @projects_path.join("alpha", ".localhost").to_s, 1)
-      c = Address.new("livereload", 40003, @projects_path.join("alpha", ".localhost").to_s, 2)
-      d = Address.new("http://beta.localhost", 31000, @projects_path.join("beta", ".localhost").to_s, 0)
-      e = Address.new("livereload", 40002, @projects_path.join("beta", ".localhost").to_s, 4)
-      f = Address.new("conflict.localhost", 30001, @projects_path.join("beta", ".localhost").to_s, 5)
+      a = Address.new("http://alpha.localhost", 30000, "~/projects/alpha/.localhost", 1)
+      b = Address.new("http://sub.alpha.localhost", 30001, "~/projects/alpha/.localhost", 2)
+      c = Address.new("livereload", 40003, "~/projects/alpha/.localhost", 3)
+      d = Address.new("http://beta.localhost", 31000, "~/projects/beta/.localhost", 1)
+      e = Address.new("livereload", 40002, "~/projects/beta/.localhost", 5)
+      f = Address.new("conflict.localhost", 30001, "~/projects/beta/.localhost", 6)
 
       b.port_conflicts = [ f ]
       c.host_conflicts = [ e ]

@@ -40,7 +40,7 @@ module Locport
     def projects
       @projects = {}.tap do |result|
         @dotfiles.each do |path|
-          File.read(path).each_line.with_index do |line, line_number|
+          File.read(path).each_line.with_index do |line, index|
             dir = File.dirname path.to_s
 
             key = if dir.start_with?(@home_path.to_s)
@@ -52,7 +52,7 @@ module Locport
             result[key] ||= []
 
             if line.strip =~ /^(.+):(\d+)$/
-              result[key] << Address.new($1, $2.to_i, path.to_s, line_number)
+              result[key] << Address.new($1, $2.to_i, "#{key}/#{DOTFILE}", index + 1)
             end
           end
         rescue Errno::ENOENT
