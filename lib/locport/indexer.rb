@@ -4,7 +4,7 @@ require "find"
 require "socket"
 
 module Locport
-  Address = Struct.new(:host, :port, :path, :line_number)
+  Address = Struct.new(:host, :port, :path, :line_number, :host_conflicts, :port_conflicts)
 
   class Indexer
     APP_NAME = "locport"
@@ -38,7 +38,7 @@ module Locport
     end
 
     def projects
-      {}.tap do |result|
+      @projects = {}.tap do |result|
         @dotfiles.each do |path|
           File.read(path).each_line.with_index do |line, line_number|
             dir = File.dirname path.to_s
@@ -58,6 +58,26 @@ module Locport
         rescue Errno::ENOENT
         end
       end.sort.to_h
+
+      addresses = @projects.values.flatten
+
+      addresses.each do |address|
+        addresses.each do |other_address|
+          next if address == other_address
+
+          if address.host == other_address.host
+            address.host_conflicts ||= []
+            address.host_conflicts << other_address
+          end
+
+          if address.port == other_address.port
+            address.port_conflicts ||= []
+            address.port_conflicts << other_address
+          end
+        end
+      end
+
+      @projects
     end
 
     def port_open?(port)

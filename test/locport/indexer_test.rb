@@ -67,15 +67,21 @@ module Locport
     def test_projects
       @indexer.index(@projects_path, recursive: true)
 
+      a = Address.new("http://alpha.localhost", 30000, @projects_path.join("alpha", ".localhost").to_s, 0)
+      b = Address.new("http://sub.alpha.localhost", 30001, @projects_path.join("alpha", ".localhost").to_s, 1)
+      c = Address.new("livereload", 40003, @projects_path.join("alpha", ".localhost").to_s, 2)
+      d = Address.new("http://beta.localhost", 31000, @projects_path.join("beta", ".localhost").to_s, 0)
+      e = Address.new("livereload", 40002, @projects_path.join("beta", ".localhost").to_s, 4)
+      f = Address.new("conflict.localhost", 30001, @projects_path.join("beta", ".localhost").to_s, 5)
+
+      b.port_conflicts = [ f ]
+      c.host_conflicts = [ e ]
+      f.port_conflicts = [ b ]
+      e.host_conflicts = [ c ]
+
       expected = {
-        "~/projects/alpha" => [
-          Address.new("http://alpha.localhost", 30000, @projects_path.join("alpha", ".localhost").to_s, 0),
-          Address.new("http://sub.alpha.localhost", 30001, @projects_path.join("alpha", ".localhost").to_s, 1),
-          Address.new("livereload", 40003, @projects_path.join("alpha", ".localhost").to_s, 2)
-        ],
-        "~/projects/beta" => [
-          Address.new("http://beta.localhost", 31000, @projects_path.join("beta", ".localhost").to_s, 0)
-        ]
+        "~/projects/alpha" => [ a, b, c ],
+        "~/projects/beta" => [ d, e, f ]
       }
       assert_equal expected, @indexer.projects
     end
