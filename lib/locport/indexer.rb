@@ -52,11 +52,11 @@ module Locport
           File.read(path).each_line.with_index do |line, index|
             dir = File.dirname path.to_s
 
-            key = cannonize_project_dir dir
+            key, source = cannonize_project_dir dir
             result[key] ||= []
 
             if line.strip =~ /^(.+):(\d+)$/
-              address = Address.new($1, $2.to_i, "#{key}/#{DOTFILE}", index + 1)
+              address = Address.new($1, $2.to_i, source, index + 1)
               result[key] << address
               @addresses << address
             end
@@ -89,8 +89,7 @@ module Locport
     end
 
     def create_address(value, dir: Dir.pwd)
-      key = cannonize_project_dir dir
-      source = "#{key}/#{DOTFILE}"
+      _, source = cannonize_project_dir dir
 
       address = if value.strip =~ /^(.+):(\d+)$/
         Address.new($1, $2.to_i, source)
@@ -114,11 +113,15 @@ module Locport
       end
 
       def cannonize_project_dir(dir)
-        if dir.start_with?(@home_path.to_s)
+        key = if dir.start_with?(@home_path.to_s)
           dir.sub(@home_path.to_s, "~")
         else
           dir
         end
+
+        source = "#{key}/#{DOTFILE}"
+
+        [ key, source ]
       end
 
       def reveal_address_conflicts
@@ -149,6 +152,10 @@ module Locport
           port = rand PORT_RANGE
           return port unless @addresses.any? { |address| address.port == port } || port_listening?(port)
         end
+      end
+
+      def append_address_to_dotfile(address, dir: Dir.pwd)
+
       end
   end
 end
