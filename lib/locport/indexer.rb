@@ -11,13 +11,13 @@ module Locport
     DOTFILE = ".localhost"
     DATA_FILE = "projects"
 
-    attr_reader :dotfiles
+    attr_reader :dotfiles, :projects
 
     def initialize(home_path: Dir.home, storage_base_dir: default_storage_base_dir)
       @home_path = home_path
       @storage_base_dir = storage_base_dir
       @dotfiles = load_dotfiles
-      @projects = {}
+      @projects = load_projects
     end
 
     def index(path, recursive: false)
@@ -37,9 +37,16 @@ module Locport
       @dotfiles = @dotfiles.uniq.sort
     end
 
-    def projects
-      @addresses = []
+    def load_dotfiles
+      File.read(storage_path).lines.map(&:strip).reject(&:empty?).map { |path| Pathname.new(path).join(DOTFILE) }
+    rescue Errno::ENOENT
+      []
+    end
+
+    def load_projects
       @projects = {}.tap do |result|
+        @addresses = []
+
         @dotfiles.each do |path|
           File.read(path).each_line.with_index do |line, index|
             dir = File.dirname path.to_s
@@ -55,10 +62,9 @@ module Locport
           end
         rescue Errno::ENOENT
         end
-      end.sort.to_h
 
-      reveal_address_conflicts
-      @projects
+        reveal_address_conflicts
+      end.sort.to_h
     end
 
     def port_open?(port)
@@ -66,12 +72,6 @@ module Locport
       true
     rescue Errno::ECONNREFUSED, Errno::ETIMEDOUT, SocketError
       false
-    end
-
-    def load_dotfiles
-      File.read(storage_path).lines.map(&:strip).reject(&:empty?).map { |path| Pathname.new(path).join(DOTFILE) }
-    rescue Errno::ENOENT
-      []
     end
 
     def save
