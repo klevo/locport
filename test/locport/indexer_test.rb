@@ -136,5 +136,22 @@ module Locport
     ensure
       FileUtils.rm_rf dir
     end
+
+    def test_append_address_to_dotfile
+      dir = Dir.mktmpdir
+      refute File.exist?("#{dir}/.localhost")
+
+      address = Address.new("hi", 1)
+      @indexer.append_address_to_dotfile(address, dir:)
+
+      assert File.exist?("#{dir}/.localhost")
+      assert_equal "hi:1\n", File.read("#{dir}/.localhost")
+
+      address = Address.new("hey", 2)
+      @indexer.append_address_to_dotfile(address, dir:)
+      assert_equal "hi:1\nhey:2\n", File.read("#{dir}/.localhost")
+    ensure
+      FileUtils.rm_rf dir
+    end
   end
 end

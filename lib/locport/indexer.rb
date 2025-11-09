@@ -103,6 +103,14 @@ module Locport
       address
     end
 
+    def append_address_to_dotfile(address, dir: Dir.pwd)
+      _, source = cannonize_project_dir dir
+
+      File.open(source, "a") do |file|
+        file.puts("#{address.host}:#{address.port}")
+      end
+    end
+
     private
       def storage_dir
         File.join @storage_base_dir, APP_NAME
@@ -152,10 +160,6 @@ module Locport
           port = rand PORT_RANGE
           return port unless @addresses.any? { |address| address.port == port } || port_listening?(port)
         end
-      end
-
-      def append_address_to_dotfile(address, dir: Dir.pwd)
-
       end
   end
 end
