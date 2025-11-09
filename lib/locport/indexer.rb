@@ -44,12 +44,7 @@ module Locport
           File.read(path).each_line.with_index do |line, index|
             dir = File.dirname path.to_s
 
-            key = if dir.start_with?(@home_path.to_s)
-              dir.sub(@home_path.to_s, "~")
-            else
-              dir
-            end
-
+            key = cannonize_project_dir dir
             result[key] ||= []
 
             if line.strip =~ /^(.+):(\d+)$/
@@ -99,6 +94,14 @@ module Locport
 
       def storage_path
         File.join storage_dir, DATA_FILE
+      end
+
+      def cannonize_project_dir(dir)
+        if dir.start_with?(@home_path.to_s)
+          dir.sub(@home_path.to_s, "~")
+        else
+          dir
+        end
       end
 
       def reveal_address_conflicts
