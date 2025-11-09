@@ -43,35 +43,19 @@ module Locport
     desc "add [HOST[:PORT]]", "Add a new host to .localhost file. \
       Without arguments current directory name will be used and random port number assigned."
     def add(host = "#{File.basename(Dir.pwd)}.localhost")
-      host_with_port, port = ensure_port(host.strip)
-      host = host_with_port.split(":").first
+      address = indexer.create_address host
 
-      if used_ports.include?(port)
-        say_error "Port #{port} is "
-        say_error "already used. ", :red
-        say_error "See `locport list`"
-        exit 1
-      end
+      say_address_conflicts address
+      exit 1 if @conflicts_found
 
-      if used_hosts.include?(host)
-        say_error "Host '#{host}' is " 
-        say_error "already used. ", :red
-        say_error "See `locport list`"
-        exit 1
-      end
+      indexer.append_address_to_dotfile address
 
-      append_to_dotfile host_with_port
-      index silent: true
-
-      say "#{host_with_port} ", :bold 
-      say "added ", :green
-      say "to #{DOTFILE}"
+      say "#{address.host}:#{address.port} ", :bold 
+      say "added ✓", :green
     end
 
     desc "list", "List indexed projects, hosts and ports"
     def list
-      @conflicts_found = false
-
       indexer.projects.each do |dir, addresses|
         say dir, :blue
 
@@ -84,7 +68,7 @@ module Locport
               say [ display_host(address.host), address.port ].join(":")
             end
 
-            say_port_conflicts address
+            say_address_conflicts address
           end
         end
       end
@@ -211,7 +195,7 @@ module Locport
         end
       end
 
-      def say_port_conflicts(address)
+      def say_address_conflicts(address)
         if address.port_conflicts
           @conflicts_found = true
 

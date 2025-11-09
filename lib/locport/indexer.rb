@@ -104,9 +104,9 @@ module Locport
     end
 
     def append_address_to_dotfile(address, dir: Dir.pwd)
-      _, source = cannonize_project_dir dir
+      _, _, fullpath = cannonize_project_dir dir
 
-      File.open(source, "a") do |file|
+      File.open(fullpath, "a") do |file|
         file.puts("#{address.host}:#{address.port}")
       end
     end
@@ -128,8 +128,9 @@ module Locport
         end
 
         source = "#{key}/#{DOTFILE}"
+        fullpath = "#{dir}/#{DOTFILE}"
 
-        [ key, source ]
+        [ key, source, fullpath ]
       end
 
       def reveal_address_conflicts
