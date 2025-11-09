@@ -114,6 +114,9 @@ module Locport
       File.open(fullpath, "a") do |file|
         file.puts("#{address.host}:#{address.port}")
       end
+
+      index dir
+      save
     end
 
     def storage_path
