@@ -1,6 +1,10 @@
 # locport
 
-Manage local ports across projects. Prevent conflicts. Overview all your projects, hosts and ports. Proxy-free.
+* Standardizes keeping track of local development ports.
+* See which ports are listening.
+* Automatically assign unused ports.
+* See conflicts.
+* Proxy and daemon free.
 
 ![locport-logo](https://github.com/user-attachments/assets/52df253c-aeb9-46a1-9c26-a40ad733379f)
 
@@ -15,10 +19,12 @@ hello.localhost:3001
 another.service.localhost:3002
 ```
 
-A single project can have zero, one or multiple domains associated to it.
+A single project can have multiple addresses associated to it.
 
-To add the project to **locport**, simply `locport index [PATH]`. Now you can overview hosts and ports with
-`locport list` and easily discover conflicts across any number of projects.
+To add the project to **locport**, simply `locport index [PATH1] [PATH2]`. Now you can overview hosts and ports with
+`locport` and easily discover conflicts across any number of projects.
+
+You can also add projects recursively, like so: `locport index ~/projects -r`. This will look for directories that contain `.localhost` file and indexes those.
 
 <img width="687" height="175" alt="list success" src="https://github.com/user-attachments/assets/2b1dbef7-fa3b-44b9-af3e-f48340d3b49a" />
 
@@ -32,14 +38,17 @@ gem install locport
 
 ## Usage
 
-### Adding hosts with ports to a project
+### Adding hosts
 
-To create and/or add to `.localhost` file, from within your project directory:
+You've got several options to create or add to `.localhost` file, 
+from within your project directory:
 
 ```sh
-locport add <url>[:<port>]
+# Creates .localhost file in the current directory, with randomly assigned unused port,
+# and hostname based on the current directory name suffixed with .localhost
+locport add
 
-# Example where a unique port is automatically assigned by locport
+# Adding a custom hostname and letting locport find a port
 locport add myapp.localhost
 
 # Example with a user specified port
@@ -58,12 +67,14 @@ If any conflicts are detected, they will be displayed and program exits with err
 
 <img width="685" height="254" alt="list conflicts" src="https://github.com/user-attachments/assets/ea5eeb06-1d96-4932-bc5f-93e950572e78" />
 
-### TODOs
+### Adding existing projects to the index
 
-- [ ] Handle empty lines in dotfile
-- [ ] Some hostname validation during `add`
-- [ ] Remove project from the index
-- [ ] Test suite
+```sh
+# Add specific projects that contain .localhost file
+locport index ~/projects/a ~/projects/b
+
+# Recursively find and index .localhost files
+```
 
 ## Development
 
@@ -75,4 +86,10 @@ bundle
 
 # Run commands with dev code
 ruby -Ilib/ bin/locport
+```
+
+### Running tests
+
+```sh
+bin/rake
 ```

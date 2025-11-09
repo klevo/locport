@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |spec|
   spec.name        = "locport"
-  spec.version     = "1.1.3"
+  spec.version     = "1.2.0"
   spec.summary     = "localhost port management"
   spec.description = "Overview of localhost ports used across projects. Prevent conflicts."
   spec.authors     = ["Robert Starsi"]
@@ -13,5 +13,12 @@ Gem::Specification.new do |spec|
   spec.files = Dir["lib/**/*", "LICENSE"]
   spec.executables = %w[ locport ]
 
+  spec.required_ruby_version = ">= 3.2"
+
   spec.add_dependency "thor", "~> 1.3"
+
+  spec.add_development_dependency "minitest", "~> 5.0"
+  spec.add_development_dependency "rake", "~> 13.0"
+  spec.add_development_dependency "testerobly", "~> 1.0"
+  spec.add_development_dependency "debug", "~> 1.10"
 end
