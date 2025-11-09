@@ -2,6 +2,8 @@
 
 require "find"
 require "socket"
+require "fileutils"
+require "pathname"
 
 module Locport
   Address = Struct.new(:host, :port, :path, :line_number, :host_conflicts, :port_conflicts)
@@ -84,7 +86,7 @@ module Locport
 
     def save
       FileUtils.mkdir_p storage_dir
-      File.write storage_path, @dotfiles.map { |path| File.dirname(path) }.join("\n")
+      File.write storage_path, @dotfiles.map { |path| File.dirname(path) }.join("\n") + "\n"
     end
 
     def default_storage_base_dir

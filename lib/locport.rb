@@ -3,14 +3,6 @@
 require "thor"
 require "locport/indexer"
 
-require "fileutils"
-require "pathname"
-
-APP_NAME = "locport"
-DATA_FILE = "projects"
-DOTFILE = ".localhost"
-PORT_RANGE = (30_000..60_000)
-
 module Locport
   class Main < Thor
     COLOR_FAINT  = "\e[2m"
