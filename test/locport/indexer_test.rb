@@ -97,7 +97,7 @@ module Locport
     end
 
     def test_create_address
-      dir = File.mktmpdir
+      dir = Dir.mktmpdir
       address = @indexer.create_address("hello.localhost:7777", dir:)
       assert_equal "hello.localhost", address.host
       assert_equal 7777, address.port

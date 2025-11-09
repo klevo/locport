@@ -38,6 +38,7 @@ module Locport
     end
 
     def projects
+      @addresses = []
       @projects = {}.tap do |result|
         @dotfiles.each do |path|
           File.read(path).each_line.with_index do |line, index|
@@ -52,31 +53,16 @@ module Locport
             result[key] ||= []
 
             if line.strip =~ /^(.+):(\d+)$/
-              result[key] << Address.new($1, $2.to_i, "#{key}/#{DOTFILE}", index + 1)
+              address = Address.new($1, $2.to_i, "#{key}/#{DOTFILE}", index + 1)
+              result[key] << address
+              @addresses << address
             end
           end
         rescue Errno::ENOENT
         end
       end.sort.to_h
 
-      addresses = @projects.values.flatten
-
-      addresses.each do |address|
-        addresses.each do |other_address|
-          next if address == other_address
-
-          if address.host == other_address.host
-            address.host_conflicts ||= []
-            address.host_conflicts << other_address
-          end
-
-          if address.port == other_address.port
-            address.port_conflicts ||= []
-            address.port_conflicts << other_address
-          end
-        end
-      end
-
+      reveal_address_conflicts
       @projects
     end
 
@@ -113,6 +99,29 @@ module Locport
 
       def storage_path
         File.join storage_dir, DATA_FILE
+      end
+
+      def reveal_address_conflicts
+        @addresses.each do |address|
+          address.host_conflicts = nil
+          address.port_conflicts = nil
+        end
+
+        @addresses.each do |address|
+          @addresses.each do |other_address|
+            next if address == other_address
+
+            if address.host == other_address.host
+              address.host_conflicts ||= []
+              address.host_conflicts << other_address
+            end
+
+            if address.port == other_address.port
+              address.port_conflicts ||= []
+              address.port_conflicts << other_address
+            end
+          end
+        end
       end
   end
 end
