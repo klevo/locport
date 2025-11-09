@@ -46,7 +46,11 @@ module Locport
       address = indexer.create_address host
 
       say_address_conflicts address
-      exit 1 if @conflicts_found
+      
+      if @conflicts_found
+        say "Can't add due to conflicts"
+        exit 1
+      end
 
       indexer.append_address_to_dotfile address
 
