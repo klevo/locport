@@ -90,10 +90,10 @@ module Locport
       # port 0 means "assign an available port"
       server = TCPServer.new('127.0.0.1', 0)
       port = server.addr[1]
-      assert @indexer.port_open?(port)
+      assert @indexer.port_listening?(port)
 
       server.close
-      refute @indexer.port_open?(port)
+      refute @indexer.port_listening?(port)
     end
 
     def test_create_address_without_conflicts

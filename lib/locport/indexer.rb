@@ -68,7 +68,7 @@ module Locport
       end.sort.to_h
     end
 
-    def port_open?(port)
+    def port_listening?(port)
       Socket.tcp("127.0.0.1", port, connect_timeout: 0.01) {}  # 10ms timeout
       true
     rescue Errno::ECONNREFUSED, Errno::ETIMEDOUT, SocketError
@@ -147,7 +147,7 @@ module Locport
       def find_unused_port
         loop do
           port = rand PORT_RANGE
-          return port unless @addresses.any? { |address| address.port == port } || port_open?(port)
+          return port unless @addresses.any? { |address| address.port == port } || port_listening?(port)
         end
       end
   end
