@@ -21,23 +21,16 @@ module Locport
       true
     end
 
-    desc "index [PATH]", "Index a project"
-    def index(path = Dir.pwd, silent: false)
-      project_path = Pathname.new(path).cleanpath
-      dotfile_path = project_path.join(DOTFILE)
-
-      unless File.exist?(dotfile_path)
-        say_error "#{dotfile_path} file doesn't exist", :red
-        say_error "You can create it from within that directory with `locport add`"
-        exit 1
+    desc "index [PATH]", "Add project path(s) to locport"
+    method_option :recursive, type: :boolean, default: false, aliases: "-r"
+    def index(*paths)
+      paths.each do |path|
+        say "Indexing "
+        say path, :blue
+        indexer.index(path, recursive: options.recursive, shell:)
       end
 
-      append_to_projects project_path.to_s
-
-      unless silent
-        say "Indexing ", :green
-        say project_path
-      end
+      say "Done ✓", :green
     end
 
     desc "add [HOST[:PORT]]", "Add a new host to .localhost file. \
@@ -85,7 +78,7 @@ module Locport
 
     desc "info", "Display tool information"
     def info
-      say "Indexers index: #{projects_file_path}"
+      say "Index file: #{indexer.storage_path}"
     end
 
     private

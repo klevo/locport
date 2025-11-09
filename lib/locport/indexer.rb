@@ -21,15 +21,20 @@ module Locport
       @projects = load_projects
     end
 
-    def index(path, recursive: false)
-      start_path = path.to_s
+    def index(path, recursive: false, shell: nil)
+      start_path = File.expand_path path.to_s
 
       begin
         Find.find(start_path) do |path|
-          break if !recursive && File.directory?(path) && path.size > start_path.size
+          Find.prune if !recursive && File.directory?(path) && path.size > start_path.size
 
           if File.basename(path) == DOTFILE && File.file?(path)
             @dotfiles << Pathname.new(path)
+
+            shell&.indent do
+              shell&.say "#{path} "
+            end
+            shell&.say "added", :green
           end
         end
       rescue Errno::ENOENT
@@ -111,13 +116,13 @@ module Locport
       end
     end
 
+    def storage_path
+      File.join storage_dir, DATA_FILE
+    end
+
     private
       def storage_dir
         File.join @storage_base_dir, APP_NAME
-      end
-
-      def storage_path
-        File.join storage_dir, DATA_FILE
       end
 
       def cannonize_project_dir(dir)
