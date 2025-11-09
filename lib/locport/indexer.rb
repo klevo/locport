@@ -24,23 +24,25 @@ module Locport
     def index(path, recursive: false, shell: nil)
       start_path = File.expand_path path.to_s
 
-      begin
-        Find.find(start_path) do |path|
-          Find.prune if !recursive && File.directory?(path) && path.size > start_path.size
+      [].tap do |result|
+        begin
+          Find.find(start_path) do |path|
+            Find.prune if !recursive && File.directory?(path) && path.size > start_path.size
 
-          if File.basename(path) == DOTFILE && File.file?(path)
-            @dotfiles << Pathname.new(path)
+            if File.basename(path) == DOTFILE && File.file?(path)
+              result << Pathname.new(path)
 
-            shell&.indent do
-              shell&.say "#{path} "
+              shell&.indent do
+                shell&.say "#{path} "
+              end
+              shell&.say "added", :green
             end
-            shell&.say "added", :green
           end
+        rescue Errno::ENOENT
         end
-      rescue Errno::ENOENT
-      end
 
-      @dotfiles = @dotfiles.uniq.sort
+        @dotfiles = (@dotfiles + result).uniq.sort
+      end
     end
 
     def load_dotfiles

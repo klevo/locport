@@ -15,18 +15,21 @@ module Locport
     end
 
     def test_index
+      size = @indexer.dotfiles.size
+
       expected = [ @projects_path.join("alpha/.localhost") ]
       assert_equal expected, @indexer.index(@projects_path.join("alpha"))
-      assert_equal expected, @indexer.dotfiles
+      assert_equal size + 1, @indexer.dotfiles.size
+      assert_equal expected.first, @indexer.dotfiles.first
 
       # Indexing another directory adds onto existing dotfiles
       @indexer.index(@projects_path.join("beta"))
-      assert_equal 2, @indexer.dotfiles.size
+      assert_equal size + 2, @indexer.dotfiles.size
       assert_equal expected.first, @indexer.dotfiles.first
 
       # Idempotency
       @indexer.index(@projects_path.join("beta"))
-      assert_equal 2, @indexer.dotfiles.size
+      assert_equal size + 2, @indexer.dotfiles.size
     end
 
     def test_empty_index
