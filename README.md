@@ -1,6 +1,6 @@
 # locport
 
-<img width="300" heigh="300" alt="locport logo" src="https://github.com/user-attachments/assets/52df253c-aeb9-46a1-9c26-a40ad733379f />
+<img width="300" height="300" alt="locport-logo" src="https://github.com/user-attachments/assets/80f078f7-65d4-4446-bfa6-1f928fdbf74e" />
 
 * Standardizes keeping track of local development ports.
 * See which ports are listening.
