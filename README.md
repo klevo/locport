@@ -2,6 +2,7 @@
 
 <img width="300" height="300" alt="locport-logo" src="https://github.com/user-attachments/assets/80f078f7-65d4-4446-bfa6-1f928fdbf74e" />
 
+
 * Standardizes keeping track of local development ports.
 * See which ports are listening.
 * Automatically assign unused ports.
@@ -65,8 +66,6 @@ locport list
 ```
 
 If any conflicts are detected, they will be displayed and program exits with error code 1.
-
-<img width="685" height="254" alt="list conflicts" src="https://github.com/user-attachments/assets/ea5eeb06-1d96-4932-bc5f-93e950572e78" />
 
 ### Adding existing projects to the index
 
