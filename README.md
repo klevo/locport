@@ -32,14 +32,17 @@ gem install locport
 
 ## Usage
 
-### Adding hosts with ports to a project
+### Adding hosts
 
-To create and/or add to `.localhost` file, from within your project directory:
+You've got several options to create or add to `.localhost` file, 
+from within your project directory:
 
 ```sh
-locport add <url>[:<port>]
+# Creates .localhost file in the current directory, with randomly assigned unused port,
+# and hostname based on the current directory name suffixed with .localhost
+locport add
 
-# Example where a unique port is automatically assigned by locport
+# Adding a custom hostname and letting locport find a port
 locport add myapp.localhost
 
 # Example with a user specified port
@@ -58,15 +61,14 @@ If any conflicts are detected, they will be displayed and program exits with err
 
 <img width="685" height="254" alt="list conflicts" src="https://github.com/user-attachments/assets/ea5eeb06-1d96-4932-bc5f-93e950572e78" />
 
-### TODOs
+### Adding existing projects to the index
 
-- [x] Test suite
-- [x] GitHub CI
-- [x] Handle empty lines in dotfile
-- [ ] Some hostname validation during `add`
-- [x] Ability to add port tcp (non-http) port, that won't be converted into HTTP. Or add http:// explicitly.
-- [ ] Remove project from the index
-- [x] Recursively index projects
+```sh
+# Add specific projects that contain .localhost file
+locport index ~/projects/a ~/projects/b
+
+# Recursively find and index .localhost files
+```
 
 ## Development
 
