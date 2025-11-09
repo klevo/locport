@@ -116,6 +116,7 @@ module Locport
       e, f = @indexer.addresses.last(2)
 
       address = @indexer.create_address("conflict.localhost:40002", dir:)
+      assert_equal address, @indexer.addresses.last
       assert_equal "conflict.localhost", address.host
       assert_equal 40002, address.port
       assert_equal [ e ], address.port_conflicts
