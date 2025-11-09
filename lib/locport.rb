@@ -30,6 +30,8 @@ module Locport
         indexer.index(path, recursive: options.recursive, shell:)
       end
 
+      indexer.save
+
       say "Done ✓", :green
     end
 
