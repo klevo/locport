@@ -1,4 +1,4 @@
-# locport
+<img src="https://github.com/user-attachments/assets/52df253c-aeb9-46a1-9c26-a40ad733379f alt="locport logo" width="300" heigh="300" />
 
 * Standardizes keeping track of local development ports.
 * See which ports are listening.
@@ -6,7 +6,8 @@
 * See conflicts.
 * Proxy and daemon free.
 
-![locport-logo](https://github.com/user-attachments/assets/52df253c-aeb9-46a1-9c26-a40ad733379f)
+<img width="846" height="646" alt="adding and listing" src="https://github.com/user-attachments/assets/133e36c7-9bc9-46b6-871f-e4f77cdf5f93" />
+<img width="846" height="646" alt="conflicts" src="https://github.com/user-attachments/assets/260f97b6-1cd5-44f9-92f2-858ccaa2b3d1" />
 
 ## Introducing the .localhost file convention
 
@@ -25,8 +26,6 @@ To add the project to **locport**, simply `locport index [PATH1] [PATH2]`. Now y
 `locport` and easily discover conflicts across any number of projects.
 
 You can also add projects recursively, like so: `locport index ~/projects -r`. This will look for directories that contain `.localhost` file and indexes those.
-
-<img width="687" height="175" alt="list success" src="https://github.com/user-attachments/assets/2b1dbef7-fa3b-44b9-af3e-f48340d3b49a" />
 
 ## Installation
 
