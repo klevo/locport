@@ -10,6 +10,7 @@ module Locport
     APP_NAME = "locport"
     DOTFILE = ".localhost"
     DATA_FILE = "projects"
+    PORT_RANGE = (30_000..60_000)
 
     attr_reader :dotfiles, :projects, :addresses
 
@@ -140,6 +141,13 @@ module Locport
               address.port_conflicts << other_address
             end
           end
+        end
+      end
+
+      def find_unused_port
+        loop do
+          port = rand PORT_RANGE
+          return port unless @addresses.any? { |address| address.port == port } || port_open?(port)
         end
       end
   end

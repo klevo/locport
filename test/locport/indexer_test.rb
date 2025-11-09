@@ -116,11 +116,23 @@ module Locport
       e, f = @indexer.addresses.last(2)
 
       address = @indexer.create_address("conflict.localhost:40002", dir:)
-      assert_equal address, @indexer.addresses.last
       assert_equal "conflict.localhost", address.host
       assert_equal 40002, address.port
       assert_equal [ e ], address.port_conflicts
       assert_equal [ f ], address.host_conflicts
+      assert_equal address, @indexer.addresses.last
+    ensure
+      FileUtils.rm_rf dir
+    end
+
+    def test_create_address_with_randomly_assigned_port
+      dir = Dir.mktmpdir
+
+      address = @indexer.create_address("hello.localhost", dir:)
+      assert_equal "hello.localhost", address.host
+      assert_kind_of Integer, address.port
+      assert_nil address.port_conflicts
+      assert_nil address.host_conflicts
     ensure
       FileUtils.rm_rf dir
     end
