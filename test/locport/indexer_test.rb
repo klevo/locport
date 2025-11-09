@@ -96,17 +96,30 @@ module Locport
       refute @indexer.port_open?(port)
     end
 
-    def test_create_address
+    def test_create_address_without_conflicts
       dir = Dir.mktmpdir
-
-            skip
-
 
       address = @indexer.create_address("hello.localhost:7777", dir:)
       assert_equal "hello.localhost", address.host
       assert_equal 7777, address.port
       assert_nil address.port_conflicts
       assert_nil address.host_conflicts
+    ensure
+      FileUtils.rm_rf dir
+    end
+
+    def test_create_address_with_conflicts
+      dir = Dir.mktmpdir
+
+      @indexer.index(@projects_path, recursive: true)
+      @indexer.load_projects
+      e, f = @indexer.addresses.last(2)
+
+      address = @indexer.create_address("conflict.localhost:40002", dir:)
+      assert_equal "conflict.localhost", address.host
+      assert_equal 40002, address.port
+      assert_equal [ e ], address.port_conflicts
+      assert_equal [ f ], address.host_conflicts
     ensure
       FileUtils.rm_rf dir
     end

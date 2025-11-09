@@ -11,7 +11,7 @@ module Locport
     DOTFILE = ".localhost"
     DATA_FILE = "projects"
 
-    attr_reader :dotfiles, :projects
+    attr_reader :dotfiles, :projects, :addresses
 
     def initialize(home_path: Dir.home, storage_base_dir: default_storage_base_dir)
       @home_path = home_path
@@ -85,6 +85,22 @@ module Locport
       else
         ENV["XDG_DATA_HOME"] || File.join(Dir.home, ".local", "share")
       end
+    end
+
+    def create_address(value, dir: Dir.pwd)
+      key = cannonize_project_dir dir
+      source = "#{key}/#{DOTFILE}"
+
+      address = if value.strip =~ /^(.+):(\d+)$/
+        Address.new($1, $2.to_i, source)
+      else
+        Address.new(value, find_unused_port, source)
+      end
+
+      @addresses << address
+      reveal_address_conflicts
+
+      address
     end
 
     private
