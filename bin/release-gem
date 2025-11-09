@@ -7,7 +7,7 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
-echo "This will release gem version $RELEASE_VERSION"
+echo "This will release gem v$RELEASE_VERSION"
 read -p "Are you sure you want to continue? [y/N]: " confirm
 if [[ "$confirm" != "y" && "$confirm" != "Y" ]]; then
   echo "Aborted."
