@@ -9,8 +9,6 @@
 * See conflicts.
 * Proxy and daemon free.
 
-<img width="846" height="646" alt="adding and listing" src="https://github.com/user-attachments/assets/133e36c7-9bc9-46b6-871f-e4f77cdf5f93" />
-<img width="846" height="646" alt="conflicts" src="https://github.com/user-attachments/assets/260f97b6-1cd5-44f9-92f2-858ccaa2b3d1" />
 
 ## Introducing the .localhost file convention
 
@@ -75,6 +73,11 @@ locport index ~/projects/a ~/projects/b
 
 # Recursively find and index .localhost files
 ```
+
+## Screenshots
+
+<img width="846" height="646" alt="adding and listing" src="https://github.com/user-attachments/assets/133e36c7-9bc9-46b6-871f-e4f77cdf5f93" />
+<img width="846" height="646" alt="conflicts" src="https://github.com/user-attachments/assets/260f97b6-1cd5-44f9-92f2-858ccaa2b3d1" />
 
 ## Development
 
