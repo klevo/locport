@@ -95,5 +95,16 @@ module Locport
       server.close
       refute @indexer.port_open?(port)
     end
+
+    def test_create_address
+      dir = File.mktmpdir
+      address = @indexer.create_address("hello.localhost:7777", dir:)
+      assert_equal "hello.localhost", address.host
+      assert_equal 7777, address.port
+      assert_nil address.port_conflicts
+      assert_nil address.host_conflicts
+    ensure
+      FileUtils.rm_rf dir
+    end
   end
 end

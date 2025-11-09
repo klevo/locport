@@ -78,8 +78,8 @@ module Locport
         shell.indent do
           addresses.each do |address|
             port_color = indexer.port_open?(address.port) ? :green : COLOR_FAINT
-
             say "• ", port_color
+
             shell.indent(-1) do
               say [ display_host(address.host), address.port ].join(":")
             end
