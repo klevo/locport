@@ -72,6 +72,7 @@ If any conflicts are detected, they will be displayed and program exits with err
 locport index ~/projects/a ~/projects/b
 
 # Recursively find and index .localhost files
+locport index -r ~/projects
 ```
 
 ## Screenshots
