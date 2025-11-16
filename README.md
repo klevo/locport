@@ -55,6 +55,8 @@ locport add myapp.localhost
 locport add myapp.localhost:30000
 ```
 
+All of the above action ensure the project is also indexed by locport.
+
 ### Listing projects and hosts
 
 ```sh
@@ -73,6 +75,12 @@ locport index ~/projects/a ~/projects/b
 
 # Recursively find and index .localhost files
 locport index -r ~/projects
+```
+
+You can view the location of the projects index, which is a single text file, containing project paths, separated by a newline.
+
+```sh
+locport info
 ```
 
 ## Screenshots
